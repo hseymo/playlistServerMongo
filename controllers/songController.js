@@ -23,7 +23,8 @@ module.exports = {
     Song.create({
         song_name: req.body.song_name,
         artist: req.body.artist,
-        genre: req.body.genre
+        genre: req.body.genre,
+        name: req.body.name
     }).then((song) => {
         return User.findOneAndUpdate( 
             { name: req.body.name }, {
@@ -66,6 +67,7 @@ module.exports = {
     Song.findOneAndRemove({ _id: req.params.songId })
       .then((song) =>
         !song
+        // crashes after sending 404 "cannot set headers after they are sent to client"
           ? res.status(404).json({ message: 'No song with this id!' })
           : User.findOneAndUpdate(
               { songs: req.params.songId },
